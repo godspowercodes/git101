@@ -1,0 +1,174 @@
+CREATE TABLE `Amenity` (
+  `amenity_id` <type>,
+  `name` <type>,
+  `description` <type>
+);
+
+CREATE TABLE `PropertyAmenity` (
+  `amenity_id` <type>,
+  `property_id` <type>,
+  `Field` <type>,
+  FOREIGN KEY (`property_id`) REFERENCES `Amenity`(`name`)
+);
+
+CREATE TABLE `Host` (
+  `hostid` <type>,
+  `username` <type>,
+  `email` <type>,
+  `passwod` <type>,
+  `first_name` <type>,
+  `last_name` <type>,
+  `phone_number` <type>,
+  `address` <type>
+);
+
+CREATE TABLE `Property` (
+  `property_id` <type>,
+  `title` <type>,
+  `description` <type>,
+  `host_id` <type>,
+  `address` <type>,
+  `city` <type>,
+  `country` <type>,
+  `number_of_bedrooms` <type>,
+  `number_of_bathhrooms` <type>,
+  FOREIGN KEY (`host_id`) REFERENCES `Host`(`hostid`)
+);
+
+CREATE TABLE `PropertyVerification` (
+  `verify_id` <type>,
+  `property_id` <type>,
+  `admin_verifier` <type>,
+  `verificaion_date` <type>
+);
+
+CREATE TABLE `PropertyRule` (
+  `rule_id` <type>,
+  `property_id` <type>,
+  `rule_description` <type>,
+  FOREIGN KEY (`property_id`) REFERENCES `Property`(`property_id`)
+);
+
+CREATE TABLE `ReservationCancellation` (
+  `cancellation_id` <type>,
+  `reservation_id` <type>,
+  `reason_id` <type>,
+  `cancellation_date` <type>
+);
+
+CREATE TABLE `GuestNotificationPreference` (
+  `guest_id` <type>,
+  `recieve_email_notiification` <type>,
+  `recieve_push_notification` <type>,
+  `recieve_sms_notification` <type>
+);
+
+CREATE TABLE `UserVerificationStatus` (
+  `statusid` <type>,
+  `userid` <type>,
+  `Verification_status` <type>
+);
+
+CREATE TABLE `Guest` (
+  `guestid` <type>,
+  `username` <type>,
+  `email` <type>,
+  `passwod` <type>,
+  `first_name` <type>,
+  `last_name` <type>,
+  `phone_number` <type>,
+  `address` <type>
+);
+
+CREATE TABLE `Reservation` (
+  `reservation_id` <type>,
+  `guest_id` <type>,
+  `property_id` <type>,
+  `check_in` <type>,
+  `check_out` <type>,
+  `number_of_guest` <type>,
+  `price_per_night` <type>,
+  `status` <type>,
+  FOREIGN KEY (`guest_id`) REFERENCES `Guest`(`guestid`)
+);
+
+CREATE TABLE `PropertyPhotos` (
+  `photo_id` <type>,
+  `property_id` <type>,
+  `photo_url` <type>,
+  `description` <type>,
+  FOREIGN KEY (`property_id`) REFERENCES `Property`(`title`)
+);
+
+CREATE TABLE `GuestConversation` (
+  `conversation_id` <type>,
+  `sender_id` <type>,
+  `recipient_id` <type>,
+  FOREIGN KEY (`conversation_id`) REFERENCES `Guest`(`guestid`)
+);
+
+CREATE TABLE `Review` (
+  `review_id` <type>,
+  `poperty_id` <type>,
+  `guest_id` <type>,
+  `rating` <type>,
+  `comment` <type>,
+  `review_date` <type>,
+  FOREIGN KEY (`guest_id`) REFERENCES `Guest`(`guestid`),
+  FOREIGN KEY (`poperty_id`) REFERENCES `Property`(`property_id`)
+);
+
+CREATE TABLE `CancellationReason` (
+  `reason_id` <type>,
+  `reason_description` <type>
+);
+
+CREATE TABLE `Payment` (
+  `payment_id` <type>,
+  `reservation_id` <type>,
+  `amount_paid` <type>,
+  `payment_method` <type>,
+  `payment_date` <type>,
+  FOREIGN KEY (`reservation_id`) REFERENCES `Reservation`(`reservation_id`)
+);
+
+CREATE TABLE `HostRating` (
+  `rating_id` <type>,
+  `host_id` <type>,
+  `guest_id` <type>,
+  `rating_value` <type>,
+  `comment` <type>,
+  FOREIGN KEY (`guest_id`) REFERENCES `Guest`(`guestid`),
+  FOREIGN KEY (`host_id`) REFERENCES `Host`(`hostid`)
+);
+
+CREATE TABLE `CancellationRefund` (
+  `refund_id` <type>,
+  `reservation_id` <type>,
+  `refund_amount` <type>
+);
+
+CREATE TABLE `GuestMessage` (
+  `message_id` <type>,
+  `conservation_id` <type>,
+  `message_content` <type>,
+  `timestamp` <type>,
+  FOREIGN KEY (`conservation_id`) REFERENCES `GuestConversation`(`conversation_id`)
+);
+
+CREATE TABLE `AdminVerifier` (
+  `admin_id` <type>,
+  `password` <type>,
+  `lastname` <type>,
+  `firstname` <type>,
+  `email` <type>,
+  `phone_no` <type>
+);
+
+CREATE TABLE `GuestReservationHistory` (
+  `history_id` <type>,
+  `reservation_id` <type>,
+  `guest_id` <type>,
+  FOREIGN KEY (`reservation_id`) REFERENCES `Reservation`(`reservation_id`),
+  FOREIGN KEY (`guest_id`) REFERENCES `Guest`(`guestid`)
+);
